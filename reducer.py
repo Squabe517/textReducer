@@ -37,6 +37,24 @@ def write_out_response(response):
     with open('output.txt', 'w') as file:
         for string in summary:
             file.write(string + '\n')  # Add a newline after each string
+            
+# Sends messages to chatbot and returns the responses as a list
+def getSummary(splitText):
+    summary = []
+    for message in splitText:
+        print("sending message to chatbot...(" + str(splitText.index(message)) + "/" + str(len(splitText)) + ")\n")
+        myMessage = [
+                {"role": "system", "content": "You are a college student who has been asked to summarize the following text:"},
+                {'role': 'user', 'content': message},
+        ]
+        print("receiving response from chatbot...\n")
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages= myMessage 
+        )
+        summary.append(response['choices'][0]['message']['content'])
+    return summary
+
 
 # Read the file in binary mode
 text_data = readFile('text.txt')
@@ -50,20 +68,7 @@ splitText = split_list(tokenizedText)
 for i in range(len(splitText)):
   splitText[i] = encoding.decode(splitText[i])
 
-
+summary = getSummary(splitText)
 # Send messages to chatbot, then append responses to list
-summary = []
-for message in splitText:
-    print("sending message to chatbot...(" + str(splitText.index(message)) + "/" + str(len(splitText)) + ")\n")
-    myMessage = [
-            {"role": "system", "content": "You are a college student who has been asked to summarize the following text:"},
-            {'role': 'user', 'content': message},
-    ]
-    print("receiving response from chatbot...\n")
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages= myMessage 
-    )
-    summary.append(response['choices'][0]['message']['content'])
-    
+
 write_out_response(summary)
