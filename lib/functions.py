@@ -32,7 +32,7 @@ def write_out_response(response):
     formatted_time = currentDT.strftime("%Y-%m-%d_%H-%M-%S")  # Format without colons and periods
     filename = 'output/' + formatted_time + '.txt'
     
-    with open(filename , 'w') as file:
+    with open(filename , 'w', encoding='utf-8') as file:
         for string in response:
             file.write(string + '\n')  # Add a newline after each string
             
@@ -42,7 +42,7 @@ def getSummary(splitText):
     for message in splitText:
         print("sending message to chatbot...(" + str(splitText.index(message)) + "/" + str(len(splitText)) + ")\n")
         myMessage = [
-                {"role": "system", "content": "You provide concise and comprehensive summaries of the given text. The summary should capture the main points and key details of the text while conveying the author's intended meaning accurately. Please ensure that the summary is well-organized and easy to read, with clear headings and subheadings to guide the reader through each section, use markdown and escape sequences to do this. The length of the summary should be appropriate to capture the main points and key details of the text, without including unnecessary information or becoming overly long:"},
+                {"role": "system", "content": "You provide concise and comprehensive summaries of the given text. The summary should capture the main points and key details of the text while conveying the author's intended meaning accurately. Please ensure that the summary is well-organized and easy to read, with clear headings and subheadings to guide the reader through each section, use markdown and escape sequences to accomplish this. The length of the summary should be appropriate to capture the main points and key details of the text, without including unnecessary information or becoming overly long:"},
                 {'role': 'user', 'content': message},
         ]
         print("receiving response from chatbot...\n")
